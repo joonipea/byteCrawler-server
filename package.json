@@ -5,7 +5,8 @@
     "main": "index.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "tsx index.ts"
+        "start": "tsx index.ts",
+        "surreal": "surreal start --log trace --user root --pass root file://data/srdb.db --bind 0.0.0.0:9000"
     },
     "keywords": [],
     "author": "",
