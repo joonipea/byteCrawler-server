@@ -6,6 +6,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const PORT = process.env.PORT || 7001;
+const db_url = process.env.SURREAL_DB;
+const WHITELIST = process.env.WHITELIST;
+
 const routes = {
     "/api/v1/generateWorld": async (
         req: http.IncomingMessage,
@@ -21,9 +24,7 @@ const routes = {
         req: http.IncomingMessage,
         res: http.ServerResponse
     ) => {
-        const db = new Surreal(
-            process.env.SURREAL_DB || "http://localhost:9000/rpc"
-        );
+        const db = new Surreal(db_url);
         await db.signin({ user: "root", pass: "root" });
         if (!req.headers.user) return res.end("no user");
         if (typeof req.headers.user !== "string")
@@ -36,7 +37,9 @@ const routes = {
 };
 
 const server = http.createServer(async (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", process.env.WHITELIST || "*");
+    if (!WHITELIST) return res.end("no whitelist");
+    if (!db_url) return res.end("no db url");
+    res.setHeader("Access-Control-Allow-Origin", WHITELIST);
     res.setHeader("Access-Control-Allow-Headers", "User, Record");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     const route = routes[req.url as string];
