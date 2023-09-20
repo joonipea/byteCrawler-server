@@ -2,6 +2,8 @@ import http from "http";
 import { generateWorld } from "./generation/generateWorld";
 import { getRecord } from "./routes/get";
 import { Surreal } from "surrealdb.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const PORT = process.env.PORT || 7001;
 const routes = {
@@ -32,7 +34,7 @@ const routes = {
 };
 
 const server = http.createServer(async (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Origin", process.env.WHITELIST || "*");
     res.setHeader("Access-Control-Allow-Headers", "User, Record");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     const route = routes[req.url as string];
