@@ -8,7 +8,7 @@ let [timer, timingMonitor] = [
 ];
 //generate mobs
 
-export async function generateMobs(db: Surreal, num: number) {
+export async function generateMobs(db: Surreal, num: number, itemList: item[]) {
     try {
         timingMonitor();
         for (let i = 0; i < num; i++) {
@@ -21,7 +21,6 @@ export async function generateMobs(db: Surreal, num: number) {
             };
 
             const getInventory = async () => {
-                let itemList = await db.select<item>("items");
                 let items: item[] = [];
                 for (let i = 0; i < mobRarity; i++) {
                     let item =
