@@ -12,6 +12,7 @@
     "keywords": [],
     "author": "",
     "license": "ISC",
+    "type": "module",
     "dependencies": {
         "dotenv": "^16.3.1",
         "surrealdb.js": "^0.8.4",
