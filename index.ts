@@ -17,7 +17,9 @@ const routes = {
         if (!req.headers.user) return res.end("no user");
         if (typeof req.headers.user !== "string")
             return res.end("invalid user");
-        await generateWorld(req.headers.user);
+        const db = new Surreal(db_url);
+        await db.signin({ user: "root", pass: "root" });
+        await generateWorld(req.headers.user, db);
         res.end("world generated");
     },
     "/api/v1/get": async (

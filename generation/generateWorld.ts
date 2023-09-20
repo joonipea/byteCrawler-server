@@ -4,8 +4,7 @@ import { generateMobs } from "./generateMobs";
 import { Surreal } from "surrealdb.js";
 import { generateMaps } from "./generateMaps";
 
-export async function generateWorld(user: string) {
-    const db = new Surreal("http://localhost:9000/rpc");
+export async function generateWorld(user: string, db: Surreal) {
     await db.signin({ user: "root", pass: "root" });
     await db.use({ ns: "test", db: user });
     let [exists] = await db.select(`world:${user}`);
