@@ -8,6 +8,8 @@ dotenv.config();
 const PORT = process.env.PORT || 7001;
 const db_url = process.env.SURREAL_DB;
 const WHITELIST = process.env.WHITELIST;
+const surreal_pass = process.env.SURREAL_PASS || "root";
+const surreal_user = process.env.SURREAL_USER || "root";
 
 const routes = {
     "/api/v1/generateWorld": async (
@@ -18,7 +20,7 @@ const routes = {
         if (typeof req.headers.user !== "string")
             return res.end("invalid user");
         const db = new Surreal(db_url);
-        await db.signin({ user: "root", pass: "root" });
+        await db.signin({ user: surreal_user, pass: surreal_pass });
         await generateWorld(req.headers.user, db);
         res.end("world generated");
     },
@@ -27,7 +29,7 @@ const routes = {
         res: http.ServerResponse
     ) => {
         const db = new Surreal(db_url);
-        await db.signin({ user: "root", pass: "root" });
+        await db.signin({ user: surreal_user, pass: surreal_pass });
         if (!req.headers.user) return res.end("no user");
         if (typeof req.headers.user !== "string")
             return res.end("invalid user");
