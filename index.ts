@@ -21,7 +21,9 @@ const routes = {
         req: http.IncomingMessage,
         res: http.ServerResponse
     ) => {
-        const db = new Surreal("http://localhost:9000/rpc");
+        const db = new Surreal(
+            process.env.SURREAL_DB || "http://localhost:9000/rpc"
+        );
         await db.signin({ user: "root", pass: "root" });
         if (!req.headers.user) return res.end("no user");
         if (typeof req.headers.user !== "string")
