@@ -5,6 +5,7 @@ import { Surreal } from "surrealdb.js";
 import { generateMaps } from "./generateMaps";
 
 export async function generateWorld(user: string, db: Surreal) {
+    await db.use({ ns: "test", db: user });
     let [exists] = await db.select(`world:${user}`);
     if (exists) return console.log("World already exists");
     await db.create(`world:${user}`, { name: user });
