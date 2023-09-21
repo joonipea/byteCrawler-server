@@ -2,15 +2,17 @@ import { Surreal } from "surrealdb.js";
 import { mob } from "../schemas/mob";
 import { item } from "../schemas/item";
 import { randomString } from "../methods/randomString";
+import { it } from "node:test";
 let [timer, timingMonitor] = [
     0,
     () => (timer = !timer ? Date.now() : Date.now() - timer),
 ];
 //generate mobs
 
-export async function generateMobs(db: Surreal, num: number, itemList: item[]) {
+export async function generateMobs(db: Surreal, num: number) {
     try {
         timingMonitor();
+        const itemList = await db.select<item>("items");
         for (let i = 0; i < num; i++) {
             let mobName = randomString(10);
             const mobRarity = Math.floor(Math.random() * 20) + 1;
@@ -22,9 +24,9 @@ export async function generateMobs(db: Surreal, num: number, itemList: item[]) {
 
             const getInventory = async () => {
                 let items: item[] = [];
-                for (let i = 0; i < mobRarity; i++) {
-                    let item =
-                        itemList[Math.floor(Math.random() * itemList.length)];
+                let length = itemList.length;
+                for (let i = 0; i < Math.ceil(mobRarity / 4); i++) {
+                    let item = itemList[Math.floor(Math.random() * length)];
                     items.push(item);
                 }
                 return items;

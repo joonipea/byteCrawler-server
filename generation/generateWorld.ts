@@ -12,8 +12,7 @@ export async function generateWorld(user: string, db: Surreal) {
     await db.create(`world:${user}`, { name: user });
     console.log(await generateItems(db, 100));
     console.log(await generateChars(db, 100));
-    const items = await db.select<item>("items");
-    console.log(await generateMobs(db, 100, items));
-    console.log(await generateMaps(db, 100));
+    console.log(await generateMobs(db, 100));
+    console.log(await generateMaps(db, 50));
     return console.log("World generated");
 }

@@ -28,17 +28,15 @@ export async function generateMaps(db: Surreal, num: number) {
                 name: mapName,
                 map: map,
                 floor: i + 1,
-                drops: drops,
-                enemies: enemies,
             };
 
             await db.create(`maps:${i}`, mapData);
-            for (let drop of mapData.drops) {
-                await db.query(`RELATE ${drop}->located->maps:${i}`);
-            }
-            for (let enemy of mapData.enemies) {
-                await db.query(`RELATE ${enemy}->located->maps:${i}`);
-            }
+            // for (let drop of mapData.drops) {
+            //     await db.query(`RELATE ${drop}->located->maps:${i}`);
+            // }
+            // for (let enemy of mapData.enemies) {
+            //     await db.query(`RELATE ${enemy}->located->maps:${i}`);
+            // }
         }
         return `Generated ${num} maps in ${timingMonitor()}ms`;
     } catch (error) {
@@ -56,7 +54,7 @@ async function getDrops(level: number, db: Surreal) {
         let drop =
             itemList[0].result?.[
                 Math.floor(Math.random() * itemList[0].result.length)
-            ].id;
+            ].id || "floor";
         if (drop) {
             drops.push(drop);
         }
@@ -74,7 +72,7 @@ async function getEnemies(level: number, db: Surreal) {
         let mob =
             mobList[0].result?.[
                 Math.floor(Math.random() * mobList[0].result.length)
-            ].id;
+            ].id || "floor";
         if (mob) {
             mobs.push(mob);
         }
@@ -90,7 +88,7 @@ function generateRooms(
 ) {
     let visitedCells = 0;
     let totalCells = map.length * map[0].length;
-    let visitedPercentage = Math.floor(Math.random() * 50) + 25;
+    let visitedPercentage = Math.floor(Math.random() * 50) + 15;
     let currentX = Math.floor(Math.random() * map.length);
     let currentY = Math.floor(Math.random() * map[0].length);
     let direction = Math.floor(Math.random() * 4);
