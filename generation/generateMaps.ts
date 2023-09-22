@@ -9,36 +9,38 @@ export async function generateMaps(db: Surreal, num: number) {
     try {
         timingMonitor();
         // generate a dungeon map
-        for (let i = 0; i < num; i++) {
-            let mapName = randomString(10);
-            const size = Math.ceil(Math.floor(Math.random() * 8) + 6 + i / 10);
-            let map: string[][] = [];
-            for (let m = 0; m < size; m++) {
-                let row: string[] = [];
-                for (let j = 0; j < size; j++) {
-                    row.push("wall");
-                }
-                map.push(row);
+        let [exists] = await db.select(`maps:${num}`);
+        if (exists) return console.log("Map already exists");
+
+        let mapName = randomString(10);
+        const size = Math.ceil(Math.floor(Math.random() * 8) + 6 + num / 10);
+        let map: string[][] = [];
+        for (let m = 0; m < size; m++) {
+            let row: string[] = [];
+            for (let j = 0; j < size; j++) {
+                row.push("wall");
             }
-            const drops: string[] = await getDrops(i + 1, db);
-            const enemies: string[] = await getEnemies(i / 5 + 1, db);
-            map = generateRooms(map, i, drops, enemies);
-
-            let mapData = {
-                name: mapName,
-                map: map,
-                floor: i + 1,
-            };
-
-            await db.create(`maps:${i}`, mapData);
-            // for (let drop of mapData.drops) {
-            //     await db.query(`RELATE ${drop}->located->maps:${i}`);
-            // }
-            // for (let enemy of mapData.enemies) {
-            //     await db.query(`RELATE ${enemy}->located->maps:${i}`);
-            // }
+            map.push(row);
         }
-        return `Generated ${num} maps in ${timingMonitor()}ms`;
+        const drops: string[] = await getDrops(num + 1, db);
+        const enemies: string[] = await getEnemies(num / 5 + 1, db);
+        map = generateRooms(map, num, drops, enemies);
+
+        let mapData = {
+            name: mapName,
+            map: map,
+            floor: num + 1,
+        };
+
+        await db.create(`maps:${num}`, mapData);
+        // for (let drop of mapData.drops) {
+        //     await db.query(`RELATE ${drop}->located->maps:${i}`);
+        // }
+        // for (let enemy of mapData.enemies) {
+        //     await db.query(`RELATE ${enemy}->located->maps:${i}`);
+        // }
+
+        return `Generated map in ${timingMonitor()}ms`;
     } catch (error) {
         return error.message;
     }

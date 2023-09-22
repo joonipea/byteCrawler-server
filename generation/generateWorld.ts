@@ -13,6 +13,6 @@ export async function generateWorld(user: string, db: Surreal) {
     console.log(await generateItems(db, 100));
     console.log(await generateChars(db, 100));
     console.log(await generateMobs(db, 100));
-    console.log(await generateMaps(db, 50));
+    console.log(await generateMaps(db, 0));
     return console.log("World generated");
 }
