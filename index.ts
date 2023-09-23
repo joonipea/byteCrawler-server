@@ -4,6 +4,7 @@ import { getRecord } from "./routes/get";
 import { Surreal } from "surrealdb.js";
 import dotenv from "dotenv";
 import { generateMaps } from "./generation/generateMaps";
+import { generateTown } from "./generation/generateTown";
 dotenv.config();
 
 const PORT = process.env.PORT || 7001;
@@ -53,6 +54,23 @@ const routes = {
         res.end(
             JSON.stringify(
                 await getRecord(`maps:${req.headers.floor as string}`, db)
+            )
+        );
+    },
+    "/api/v1/generateTown": async (
+        req: http.IncomingMessage,
+        res: http.ServerResponse
+    ) => {
+        const db = new Surreal(db_url);
+        await db.signin({ user: surreal_user, pass: surreal_pass });
+        if (!req.headers.user) return res.end("no user");
+        if (typeof req.headers.user !== "string")
+            return res.end("invalid user");
+        await db.use({ ns: "test", db: req.headers.user });
+        await generateTown(db, Number(req.headers.floor));
+        res.end(
+            JSON.stringify(
+                await getRecord(`town:${req.headers.floor as string}`, db)
             )
         );
     },
