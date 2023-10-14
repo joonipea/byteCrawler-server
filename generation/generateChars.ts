@@ -1,6 +1,6 @@
 import { Surreal } from "surrealdb.js";
 import { char } from "../schemas/char";
-import { randomString } from "../methods/randomString";
+import { randomString, randomPlayerName } from "../methods/randomString";
 let [timer, timingMonitor] = [
     0,
     () => (timer = !timer ? Date.now() : Date.now() - timer),
@@ -10,8 +10,14 @@ let [timer, timingMonitor] = [
 export async function generateChars(db: Surreal, num: number) {
     try {
         timingMonitor();
+        let charList: string[] = [];
         for (let i = 0; i < num; i++) {
-            let charName = randomString(10);
+            let charName = randomPlayerName();
+            if (charList.includes(charName)) {
+                i--;
+                continue;
+            }
+            charList.push(charName);
             const charRarity = Math.floor(Math.random() * 5) + 1;
             let statPoints = charRarity * 4;
             const getPoints = () => {

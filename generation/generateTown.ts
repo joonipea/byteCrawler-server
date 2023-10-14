@@ -1,5 +1,5 @@
 import { Surreal } from "surrealdb.js";
-import { randomString } from "../methods/randomString";
+import { randomString, randomMapName } from "../methods/randomString";
 
 export async function generateTown(db: Surreal, num: number) {
     try {
@@ -7,7 +7,7 @@ export async function generateTown(db: Surreal, num: number) {
         let [exists] = await db.select(`town:${num}`);
         if (exists) return console.log("Town already exists");
 
-        let mapName = randomString(10);
+        let mapName = randomMapName();
         const size = Math.ceil(Math.floor(Math.random() * 8) + 7);
         let map: string[][] = [];
         for (let m = 0; m < size; m++) {

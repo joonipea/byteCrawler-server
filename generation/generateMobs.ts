@@ -1,8 +1,7 @@
 import { Surreal } from "surrealdb.js";
 import { mob } from "../schemas/mob";
 import { item } from "../schemas/item";
-import { randomString } from "../methods/randomString";
-import { it } from "node:test";
+import { randomEnemyName, randomString } from "../methods/randomString";
 let [timer, timingMonitor] = [
     0,
     () => (timer = !timer ? Date.now() : Date.now() - timer),
@@ -13,8 +12,14 @@ export async function generateMobs(db: Surreal, num: number) {
     try {
         timingMonitor();
         const itemList = await db.select<item>("items");
+        let mobList: string[] = [];
         for (let i = 0; i < num; i++) {
-            let mobName = randomString(10);
+            let mobName = randomEnemyName();
+            if (mobList.includes(mobName)) {
+                i--;
+                continue;
+            }
+            mobList.push(mobName);
             const mobRarity = Math.floor(Math.random() * 20) + 1;
             let statPoints = mobRarity * 4;
             const getPoints = () => {
@@ -46,7 +51,7 @@ export async function generateMobs(db: Surreal, num: number) {
                 },
                 drops: await getInventory(),
                 alignment: Math.floor(Math.random() * 7) + 1,
-                species: randomString(10),
+                species: mobName.split("_")[1],
             };
             await db.create<mob>(`mobs:${mobName}`, newMob);
         }

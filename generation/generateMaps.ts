@@ -1,5 +1,5 @@
 import { Surreal } from "surrealdb.js";
-import { randomString } from "../methods/randomString";
+import { randomString, randomMapName } from "../methods/randomString";
 let [timer, timingMonitor] = [
     0,
     () => (timer = !timer ? Date.now() : Date.now() - timer),
@@ -12,7 +12,7 @@ export async function generateMaps(db: Surreal, num: number) {
         let [exists] = await db.select(`maps:${num}`);
         if (exists) return console.log("Map already exists");
 
-        let mapName = randomString(10);
+        let mapName = randomMapName();
         const size = Math.ceil(Math.floor(Math.random() * 8) + 6 + num / 10);
         let map: string[][] = [];
         for (let m = 0; m < size; m++) {
