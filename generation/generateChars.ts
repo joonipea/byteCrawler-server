@@ -25,7 +25,7 @@ export async function generateChars(db: Surreal, num: number) {
                 return points;
             };
 
-            let maxHealth = getPoints();
+            let maxHealth = getPoints() + 6;
             let newChar: char = {
                 name: charName,
                 description: randomString(20),
