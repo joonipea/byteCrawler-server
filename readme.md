@@ -1,12 +1,21 @@
-# ByteCrawler Server
+# ByteCrawler Server <!-- omit in toc -->
 
 A server for the [ByteCrawler project](https://github.com/joonipea/byteCrawler). The server is built with Node.js and SurrealDB.
 
-## Table of Contents
-
 -   [Installation](#installation)
 -   [Usage](#usage)
--   [API Documentation](#api-documentation)
+-   [API Routes](#api-routes)
+    -   [/api/v1/generateWorld](#apiv1generateworld)
+        -   [Usage](#usage-1)
+    -   [/api/v1/get](#apiv1get)
+        -   [Usage](#usage-2)
+    -   [/api/v1/generateMap](#apiv1generatemap)
+-   [Object Types](#object-types)
+    -   [Chars](#chars)
+    -   [Items](#items)
+    -   [Mobs](#mobs)
+    -   [Maps](#maps)
+    -   [Stats](#stats)
 
 ## Installation
 
