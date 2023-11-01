@@ -1,6 +1,6 @@
 # ByteCrawler Server
 
-A server for the [ByteCrawler project][(ttps://github.com/joonipea/byteCrawler). The server is built with Node.js and SurrealDB.
+A server for the [ByteCrawler project](https://github.com/joonipea/byteCrawler). The server is built with Node.js and SurrealDB.
 
 ## Table of Contents
 
