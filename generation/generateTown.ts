@@ -8,7 +8,7 @@ export async function generateTown(db: Surreal, num: number) {
         if (exists) return console.log("Town already exists");
 
         let mapName = randomMapName();
-        const size = Math.ceil(Math.floor(Math.random() * 8) + 7);
+        const size = 6;
         let map: string[][] = [];
         for (let m = 0; m < size; m++) {
             let row: string[] = [];
