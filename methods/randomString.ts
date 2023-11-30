@@ -34,6 +34,16 @@ export function randomEnemyName() {
         "mage",
         "fish",
         "golem",
+        "pengu",
+        "demon",
+        "frog",
+        "bat",
+        "psuedo dragon",
+        "viper",
+        "bunnyman",
+        "bunnyman knight",
+        "lizardman",
+        "lizardman knight",
     ];
     const enemyName = `${
         adjectives[Math.floor(Math.random() * adjectives.length)]
