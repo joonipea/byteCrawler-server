@@ -21,11 +21,12 @@ export async function generateChars(db: Surreal, num: number) {
             const charRarity = Math.floor(Math.random() * 5) + 1;
             let statPoints = charRarity * 4;
             const getPoints = () => {
-                let points = Math.floor(Math.random() * statPoints) + 1;
+                let points =
+                    Math.floor(Math.random() * statPoints) + charRarity;
                 return points;
             };
 
-            let maxHealth = getPoints() * 2;
+            let maxHealth = getPoints() * (Math.abs(charRarity - 5) + 1);
             let newChar: char = {
                 name: charName,
                 description: randomString(20),
