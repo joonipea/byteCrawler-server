@@ -1,14 +1,9 @@
 import { Surreal } from "surrealdb.js";
 import { item } from "../schemas/item";
 import { randomString } from "../methods/randomString";
-let [timer, timingMonitor] = [
-    0,
-    () => (timer = !timer ? Date.now() : Date.now() - timer),
-];
 
 export async function generateItems(db: Surreal, num: number) {
     try {
-        timingMonitor();
         // const profeciencyStat: item["profeciencyStat"][] = [
         //     "strength",
         //     "dexterity",
@@ -73,7 +68,7 @@ export async function generateItems(db: Surreal, num: number) {
             };
             await db.create(`items:${itemName}`, newItem);
         }
-        return `Generated ${num} items in ${timingMonitor()}ms`;
+        return `Generated ${num} items`;
     } catch (error) {
         return error.message;
     }

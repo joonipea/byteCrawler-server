@@ -1,13 +1,8 @@
 import { Surreal } from "surrealdb.js";
 import { randomString, randomMapName } from "../methods/randomString";
-let [timer, timingMonitor] = [
-    0,
-    () => (timer = !timer ? Date.now() : Date.now() - timer),
-];
 
 export async function generateMaps(db: Surreal, num: number) {
     try {
-        timingMonitor();
         // generate a dungeon map
         let [exists] = await db.select(`maps:${num}`);
         if (exists) return console.log("Map already exists");
@@ -40,7 +35,7 @@ export async function generateMaps(db: Surreal, num: number) {
         //     await db.query(`RELATE ${enemy}->located->maps:${i}`);
         // }
 
-        return `Generated map in ${timingMonitor()}ms`;
+        return `Generated map ${num}`;
     } catch (error) {
         return error.message;
     }

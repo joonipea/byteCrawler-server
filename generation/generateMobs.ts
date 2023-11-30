@@ -2,15 +2,11 @@ import { Surreal } from "surrealdb.js";
 import { mob } from "../schemas/mob";
 import { item } from "../schemas/item";
 import { randomEnemyName, randomString } from "../methods/randomString";
-let [timer, timingMonitor] = [
-    0,
-    () => (timer = !timer ? Date.now() : Date.now() - timer),
-];
+
 //generate mobs
 
 export async function generateMobs(db: Surreal, num: number) {
     try {
-        timingMonitor();
         const itemList = await db.select<item>("items");
         let mobList: string[] = [];
         for (let i = 0; i < num; i++) {
@@ -55,7 +51,7 @@ export async function generateMobs(db: Surreal, num: number) {
             };
             await db.create<mob>(`mobs:${mobName}`, newMob);
         }
-        return `Generated ${num} mobs in ${timingMonitor()}ms`;
+        return `Generated ${num} mobs`;
     } catch (error) {
         return error.message;
     }

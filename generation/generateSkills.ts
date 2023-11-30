@@ -1,14 +1,9 @@
 import { Surreal } from "surrealdb.js";
 import { skill } from "../schemas/skills";
 import { randomString } from "../methods/randomString";
-let [timer, timingMonitor] = [
-    0,
-    () => (timer = !timer ? Date.now() : Date.now() - timer),
-];
 
 export async function generateSkills(db: Surreal, num: number) {
     try {
-        timingMonitor();
         const profeciencyStat: skill["profeciencyStat"][] = [
             "strength",
             "dexterity",
@@ -31,7 +26,7 @@ export async function generateSkills(db: Surreal, num: number) {
             };
             await db.create<skill>(`skills:${skillName}`, newSkill);
         }
-        return `Generated ${num} skills in ${timingMonitor()}ms`;
+        return `Generated ${num} skills`;
     } catch (error) {
         return error.message;
     }
