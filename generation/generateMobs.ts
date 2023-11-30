@@ -37,7 +37,7 @@ export async function generateMobs(db: Surreal, num: number) {
                 return items;
             };
 
-            let maxHealth = getPoints() * 2;
+            let maxHealth = getPoints() * 2 * mobRarity;
             let newMob: mob = {
                 name: mobName,
                 description: randomString(20),
