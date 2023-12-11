@@ -4,4 +4,6 @@ export type stats = {
     attack: number;
     defense: number;
     luck: number; //handles crit chance and evasion
+    maxMP?: number;
+    mp?: number;
 };

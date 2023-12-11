@@ -22,6 +22,7 @@ export async function generateChars(db: Surreal, num: number) {
             };
 
             let maxHealth = getPoints() * (Math.abs(charRarity - 5) + 1);
+            let maxMP = getPoints();
             let newChar: char = {
                 name: charName,
                 description: randomString(20),
@@ -34,6 +35,8 @@ export async function generateChars(db: Surreal, num: number) {
                     attack: getPoints(),
                     defense: getPoints(),
                     luck: getPoints(),
+                    maxMP: maxMP,
+                    mp: maxMP
                 },
                 alignment: Math.floor(Math.random() * 10) + 1,
                 species: randomString(10),
