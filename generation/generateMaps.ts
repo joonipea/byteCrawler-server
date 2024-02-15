@@ -156,7 +156,7 @@ function generateRooms(
                 break;
         }
 
-        if (Math.floor(Math.random() * 10) > 2) {
+        if (Math.floor(Math.random() * 10) > 5) {
             direction = Math.floor(Math.random() * 4);
         }
     }
