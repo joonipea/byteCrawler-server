@@ -1,4 +1,4 @@
-import { Surreal } from "surrealdb.js";
+import { Surreal, RecordId } from "surrealdb.js";
 import { mob } from "../schemas/mob";
 import { item } from "../schemas/item";
 import { randomEnemyName, randomString } from "../methods/randomString";
@@ -49,7 +49,8 @@ export async function generateMobs(db: Surreal, num: number) {
                 alignment: Math.floor(Math.random() * 7) + 1,
                 species: mobName.split("_")[1],
             };
-            await db.create<mob>(`mobs:${mobName}`, newMob);
+            const id = new RecordId("mobs", mobName);
+            await db.create<mob>(id, newMob);
         }
         return `Generated ${num} mobs`;
     } catch (error) {

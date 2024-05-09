@@ -21,8 +21,16 @@ const routes = {
         if (!req.headers.user) return res.end("no user");
         if (typeof req.headers.user !== "string")
             return res.end("invalid user");
-        const db = new Surreal(db_url);
-        await db.signin({ user: surreal_user, pass: surreal_pass });
+        const db = new Surreal();
+        if (!db_url) return res.end("no db url");
+        await db.connect(db_url, {
+            auth: {
+                username: surreal_user,
+                password: surreal_pass,
+            },
+            namespace: "test",
+            database: req.headers.user,
+        });
         await generateWorld(req.headers.user, db);
         res.end("world generated");
     },
@@ -30,47 +38,70 @@ const routes = {
         req: http.IncomingMessage,
         res: http.ServerResponse
     ) => {
-        const db = new Surreal(db_url);
-        await db.signin({ user: surreal_user, pass: surreal_pass });
+        const db = new Surreal();
+        if (!db_url) return res.end("no db url");
         if (!req.headers.user) return res.end("no user");
         if (typeof req.headers.user !== "string")
             return res.end("invalid user");
-        await db.use({ ns: "test", db: req.headers.user });
-        res.end(
-            JSON.stringify(await getRecord(req.headers.record as string, db))
-        );
+        await db.connect(db_url, {
+            auth: {
+                username: surreal_user,
+                password: surreal_pass,
+            },
+            namespace: "test",
+            database: req.headers.user,
+        });
+        const requested_record = req.headers.record as string;
+        if (requested_record.includes(":")) {
+            const [tb, id] = requested_record.split(":");
+            res.end(JSON.stringify(await getRecord(tb, id, db)));
+        }
+        res.end(JSON.stringify(await db.select(requested_record)));
     },
     "/api/v1/generateMap": async (
         req: http.IncomingMessage,
         res: http.ServerResponse
     ) => {
-        const db = new Surreal(db_url);
-        await db.signin({ user: surreal_user, pass: surreal_pass });
+        const db = new Surreal();
+        if (!db_url) return res.end("no db url");
         if (!req.headers.user) return res.end("no user");
         if (typeof req.headers.user !== "string")
             return res.end("invalid user");
-        await db.use({ ns: "test", db: req.headers.user });
+        await db.connect(db_url, {
+            auth: {
+                username: surreal_user,
+                password: surreal_pass,
+            },
+            namespace: "test",
+            database: req.headers.user,
+        });
         await generateMaps(db, Number(req.headers.floor));
-        res.end(
-            JSON.stringify(
-                await getRecord(`maps:${req.headers.floor as string}`, db)
-            )
+        const response = JSON.stringify(
+            await getRecord("maps", Number(req.headers.floor), db)
         );
+        res.end(response);
     },
     "/api/v1/generateTown": async (
         req: http.IncomingMessage,
         res: http.ServerResponse
     ) => {
-        const db = new Surreal(db_url);
-        await db.signin({ user: surreal_user, pass: surreal_pass });
+        const db = new Surreal();
+        if (!db_url) return res.end("no db url");
         if (!req.headers.user) return res.end("no user");
         if (typeof req.headers.user !== "string")
             return res.end("invalid user");
-        await db.use({ ns: "test", db: req.headers.user });
+        await db.connect(db_url, {
+            auth: {
+                username: surreal_user,
+                password: surreal_pass,
+            },
+            namespace: "test",
+            database: req.headers.user,
+        });
         await generateTown(db, Number(req.headers.floor));
         res.end(
             JSON.stringify(
-                await getRecord(`town:${req.headers.floor as string}`, db)
+                await getRecord("town", Number(req.headers.floor), db)
             )
         );
     },

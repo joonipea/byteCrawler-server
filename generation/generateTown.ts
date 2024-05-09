@@ -1,10 +1,11 @@
-import { Surreal } from "surrealdb.js";
+import { Surreal, RecordId } from "surrealdb.js";
 import { randomString, randomMapName } from "../methods/randomString";
 
 export async function generateTown(db: Surreal, num: number) {
     try {
         // generate a town map
-        let [exists] = await db.select(`town:${num}`);
+        const id = new RecordId("town", num);
+        let exists = await db.select(id);
         if (exists) return console.log("Town already exists");
 
         let mapName = randomMapName();
@@ -43,7 +44,7 @@ export async function generateTown(db: Surreal, num: number) {
             map: map,
         };
 
-        await db.create(`town:${num}`, mapData);
+        await db.create(id, mapData);
 
         return `Generated map`;
     } catch (error) {

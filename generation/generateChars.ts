@@ -1,4 +1,4 @@
-import { Surreal } from "surrealdb.js";
+import { RecordId, Surreal } from "surrealdb.js";
 import { char } from "../schemas/char";
 import { randomString, randomPlayerName } from "../methods/randomString";
 
@@ -36,12 +36,13 @@ export async function generateChars(db: Surreal, num: number) {
                     defense: getPoints(),
                     luck: getPoints(),
                     maxMP: maxMP,
-                    mp: maxMP
+                    mp: maxMP,
                 },
                 alignment: Math.floor(Math.random() * 10) + 1,
                 species: randomString(10),
             };
-            await db.create<char>(`chars:${charName}`, newChar);
+            const id = new RecordId("chars", charName);
+            await db.create<char>(id, newChar);
         }
         return `Generated ${num} chars`;
     } catch (error) {

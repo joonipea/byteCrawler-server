@@ -1,27 +1,27 @@
 {
-    "name": "server",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.ts",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "tsx index.ts",
-        "surreal": "surreal start --log trace --user root --pass root file://data/srdb.db --bind 0.0.0.0:9000",
-        "prod": "surreal start --user root --pass root memory --bind 0.0.0.0:9000 & npm run start"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "type": "module",
-    "dependencies": {
-        "dotenv": "^16.3.1",
-        "surrealdb.js": "^0.8.4",
-        "tsx": "^3.12.7"
-    },
-    "devDependencies": {
-        "@types/node": "^20.5.1"
-    },
-    "engines": {
-        "node": ">=18.0.0"
-    }
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsx index.ts",
+    "surreal": "surreal start --auth --user root --pass root file://data/srdb.db --bind 0.0.0.0:9000",
+    "prod": "surreal start --user root --pass root memory --bind 0.0.0.0:9000 & npm run start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "surrealdb.js": "^1.0.0-beta.6",
+    "tsx": "^3.12.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }

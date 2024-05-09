@@ -1,10 +1,11 @@
-import { Surreal } from "surrealdb.js";
+import { Surreal, RecordId } from "surrealdb.js";
 import { randomString, randomMapName } from "../methods/randomString";
 
 export async function generateMaps(db: Surreal, num: number) {
     try {
         // generate a dungeon map
-        let [exists] = await db.select(`maps:${num}`);
+        const id = new RecordId("maps", num);
+        let exists = await db.select(id);
         if (exists) return console.log("Map already exists");
 
         let mapName = randomMapName();
@@ -27,7 +28,7 @@ export async function generateMaps(db: Surreal, num: number) {
             floor: num + 1,
         };
 
-        await db.create(`maps:${num}`, mapData);
+        await db.create(id, mapData);
         // for (let drop of mapData.drops) {
         //     await db.query(`RELATE ${drop}->located->maps:${i}`);
         // }
@@ -47,11 +48,9 @@ async function getDrops(level: number, db: Surreal) {
     let [itemList] = await db.query<[dropItem[]]>(
         `SELECT id FROM items WHERE rarity <= ${level / 20 + 1}`
     );
-    if (!itemList.result || itemList.result.length == 0) return ["floor"];
+    if (!itemList || itemList.length == 0) return ["floor"];
     for (let idx = 0; idx < Math.floor(Math.random() * 5) + 1; idx++) {
-        let drop =
-            itemList.result[Math.floor(Math.random() * itemList.result.length)]
-                .id;
+        let drop = itemList[Math.floor(Math.random() * itemList.length)].id;
         if (drop) {
             drops.push(drop);
         }
@@ -65,11 +64,9 @@ async function getEnemies(level: number, db: Surreal) {
     let [mobList] = await db.query<[mob[]]>(
         `SELECT id FROM mobs WHERE level <= ${level} AND level >= ${level - 2}`
     );
-    if (!mobList.result || mobList.result.length == 0) return ["floor"];
+    if (!mobList || mobList.length == 0) return ["floor"];
     for (let idx = 0; idx < Math.floor(Math.random() * 5) + 1; idx++) {
-        let mob =
-            mobList.result[Math.floor(Math.random() * mobList.result.length)]
-                .id;
+        let mob = mobList[Math.floor(Math.random() * mobList.length)].id;
         if (mob) {
             mobs.push(mob);
         }
