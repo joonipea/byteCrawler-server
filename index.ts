@@ -39,25 +39,32 @@ const routes = {
         res: http.ServerResponse
     ) => {
         const db = new Surreal();
-        if (!db_url) return res.end("no db url");
-        if (!req.headers.user) return res.end("no user");
-        if (typeof req.headers.user !== "string")
-            return res.end("invalid user");
-        await db.connect(db_url, {
-            auth: {
-                username: surreal_user,
-                password: surreal_pass,
-            },
-            namespace: "test",
-            database: req.headers.user,
-        });
-        const requested_record = req.headers.record as string;
-        if (requested_record.includes(":")) {
-            const [tb, id] = requested_record.split(":");
-            res.end(JSON.stringify(await getRecord(tb, id, db)));
+        try {
+            if (!db_url) return res.end("no db url");
+            if (!req.headers.user) return res.end("no user");
+            if (typeof req.headers.user !== "string")
+                return res.end("invalid user");
+            await db.connect(db_url, {
+                auth: {
+                    username: surreal_user,
+                    password: surreal_pass,
+                },
+                namespace: "test",
+                database: req.headers.user,
+            });
+            const requested_record = req.headers.record as string;
+            if (requested_record.includes(":")) {
+                const [tb, id] = requested_record.split(":");
+                res.end(JSON.stringify(await getRecord(tb, id, db)));
+            }
+            console.log(requested_record);
+            res.end(JSON.stringify(await db.select(requested_record)));
+        } catch (error) {
+            res.writeHead(500);
+            res.end(error.message);
+        } finally {
+            await db.close();
         }
-        console.log(requested_record);
-        res.end(JSON.stringify(await db.select(requested_record)));
     },
     "/api/v1/generateMap": async (
         req: http.IncomingMessage,
