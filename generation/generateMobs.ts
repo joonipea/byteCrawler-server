@@ -49,11 +49,13 @@ export async function generateMobs(db: Surreal, num: number) {
                 alignment: Math.floor(Math.random() * 7) + 1,
                 species: mobName.split("_")[1],
             };
+            console.log(newMob);
             const id = new RecordId("mobs", mobName);
             await db.create<mob>(id, newMob);
         }
         return `Generated ${num} mobs`;
     } catch (error) {
+        console.error(error);
         return error.message;
     }
 }
