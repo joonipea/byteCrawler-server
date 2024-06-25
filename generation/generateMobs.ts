@@ -45,7 +45,7 @@ export async function generateMobs(db: Surreal, num: number) {
                     defense: getPoints(),
                     luck: getPoints(),
                 },
-                // drops: await getInventory(),
+                drops: await getInventory(),
                 alignment: Math.floor(Math.random() * 7) + 1,
                 species: mobName.split("_")[1],
             };
