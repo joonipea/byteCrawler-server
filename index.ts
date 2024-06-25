@@ -57,7 +57,6 @@ const routes = {
                 const [tb, id] = requested_record.split(":");
                 res.end(JSON.stringify(await getRecord(tb, id, db)));
             }
-            console.log(requested_record);
             res.end(JSON.stringify(await db.select(requested_record)));
         } catch (error) {
             res.writeHead(500);

@@ -44,13 +44,14 @@ export async function generateMaps(db: Surreal, num: number) {
 
 async function getDrops(level: number, db: Surreal) {
     let drops: string[] = [];
-    type dropItem = { id: string };
+    type dropItem = { id: RecordId };
     let [itemList] = await db.query<[dropItem[]]>(
         `SELECT id FROM items WHERE rarity <= ${level / 20 + 1}`
     );
     if (!itemList || itemList.length == 0) return ["floor"];
     for (let idx = 0; idx < Math.floor(Math.random() * 5) + 1; idx++) {
-        let drop = itemList[Math.floor(Math.random() * itemList.length)].id;
+        let drop =
+            itemList[Math.floor(Math.random() * itemList.length)].id.toString();
         if (drop) {
             drops.push(drop);
         }
@@ -60,13 +61,14 @@ async function getDrops(level: number, db: Surreal) {
 
 async function getEnemies(level: number, db: Surreal) {
     let mobs: string[] = [];
-    type mob = { id: string };
+    type mob = { id: RecordId };
     let [mobList] = await db.query<[mob[]]>(
         `SELECT id FROM mobs WHERE level <= ${level} AND level >= ${level - 2}`
     );
     if (!mobList || mobList.length == 0) return ["floor"];
     for (let idx = 0; idx < Math.floor(Math.random() * 5) + 1; idx++) {
-        let mob = mobList[Math.floor(Math.random() * mobList.length)].id;
+        let mob =
+            mobList[Math.floor(Math.random() * mobList.length)].id.toString();
         if (mob) {
             mobs.push(mob);
         }

@@ -28,8 +28,10 @@ export async function generateMobs(db: Surreal, num: number) {
                 let length = itemList.length;
                 for (let i = 0; i < Math.ceil(mobRarity / 4); i++) {
                     let item = itemList[Math.floor(Math.random() * length)];
+                    item.id = (item.id as RecordId).toString();
                     items.push(item);
                 }
+
                 return items;
             };
 
@@ -49,7 +51,6 @@ export async function generateMobs(db: Surreal, num: number) {
                 alignment: Math.floor(Math.random() * 7) + 1,
                 species: mobName.split("_")[1],
             };
-            console.log(newMob);
             const id = new RecordId("mobs", mobName);
             await db.create<mob>(id, newMob);
         }

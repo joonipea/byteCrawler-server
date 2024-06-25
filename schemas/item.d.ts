@@ -1,3 +1,4 @@
+import { RecordId } from "surrealdb.js";
 import { skill } from "./skills";
 
 export type item = {
@@ -28,4 +29,5 @@ export type item = {
     // weight: number;
     price: number;
     levelRequirement?: number;
+    id?: any;
 };
