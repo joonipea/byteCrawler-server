@@ -31,7 +31,7 @@ export async function generateMobs(db: Surreal, num: number) {
                     item.id = (item.id as RecordId).toString();
                     items.push(item);
                 }
-
+                console.log(items);
                 return items;
             };
 
