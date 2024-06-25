@@ -83,9 +83,10 @@ const routes = {
                 namespace: "test",
                 database: req.headers.user,
             });
+            if (!req.headers.floor) return res.end("no floor");
             await generateMaps(db, Number(req.headers.floor));
             const response = JSON.stringify(
-                await getRecord("maps", Number(req.headers.floor), db)
+                await getRecord("maps", req.headers.floor.toString(), db)
             );
             res.end(response);
         } catch (error) {
@@ -112,10 +113,11 @@ const routes = {
             namespace: "test",
             database: req.headers.user,
         });
+        if (!req.headers.floor) return res.end("no floor");
         await generateTown(db, Number(req.headers.floor));
         res.end(
             JSON.stringify(
-                await getRecord("town", Number(req.headers.floor), db)
+                await getRecord("town", req.headers.floor.toString(), db)
             )
         );
     },
