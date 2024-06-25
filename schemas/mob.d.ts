@@ -6,7 +6,6 @@ export type mob = {
     name: string;
     description: string;
     level: number;
-    drops: item[];
     stats: stats;
     alignment: number;
     taxonomy?: taxonomy;

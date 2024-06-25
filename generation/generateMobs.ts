@@ -1,14 +1,11 @@
 import { Surreal, RecordId } from "surrealdb.js";
 import { mob } from "../schemas/mob";
-import { item } from "../schemas/item";
 import { randomEnemyName, randomString } from "../methods/randomString";
 
 //generate mobs
 
 export async function generateMobs(db: Surreal, num: number) {
     try {
-        const itemList = await db.select<item>("items");
-        console.log(itemList);
         let mobList: string[] = [];
         for (let i = 0; i < num; i++) {
             let mobName = randomEnemyName();
@@ -24,18 +21,6 @@ export async function generateMobs(db: Surreal, num: number) {
                 return points;
             };
 
-            const getInventory = async () => {
-                let items: item[] = [];
-                let length = itemList.length;
-                for (let i = 0; i < Math.ceil(mobRarity / 4); i++) {
-                    let item = itemList[Math.floor(Math.random() * length)];
-                    item.id = (item.id as RecordId).toString();
-                    items.push(item);
-                }
-                console.log(items);
-                return items;
-            };
-
             let maxHealth = getPoints() * 2 * mobRarity;
             let newMob: mob = {
                 name: mobName,
@@ -48,7 +33,6 @@ export async function generateMobs(db: Surreal, num: number) {
                     defense: getPoints(),
                     luck: getPoints(),
                 },
-                drops: await getInventory(),
                 alignment: Math.floor(Math.random() * 7) + 1,
                 species: mobName.split("_")[1],
             };
