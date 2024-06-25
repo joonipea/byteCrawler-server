@@ -10,7 +10,7 @@ export async function generateMaps(db: Surreal, num: number) {
         console.log(typeof num);
 
         let mapName = randomMapName();
-        const size = Math.ceil(Math.floor(Math.random() * 8) + 6 + num / 10);
+        const size = Math.ceil(Math.floor(Math.random() * 4) + 6 + num / 10);
         let map: string[][] = [];
         for (let m = 0; m < size; m++) {
             let row: string[] = [];
