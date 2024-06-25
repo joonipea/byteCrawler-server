@@ -28,7 +28,7 @@ export async function generateMaps(db: Surreal, num: number) {
             map: map,
             floor: num + 1,
         };
-
+        console.log(mapData);
         await db.create(id, mapData);
         // for (let drop of mapData.drops) {
         //     await db.query(`RELATE ${drop}->located->maps:${i}`);
@@ -39,6 +39,8 @@ export async function generateMaps(db: Surreal, num: number) {
 
         return `Generated map ${num}`;
     } catch (error) {
+        console.error(error);
+        console.log(error);
         return error.message;
     }
 }
