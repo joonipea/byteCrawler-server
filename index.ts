@@ -70,23 +70,30 @@ const routes = {
         res: http.ServerResponse
     ) => {
         const db = new Surreal();
-        if (!db_url) return res.end("no db url");
-        if (!req.headers.user) return res.end("no user");
-        if (typeof req.headers.user !== "string")
-            return res.end("invalid user");
-        await db.connect(db_url, {
-            auth: {
-                username: surreal_user,
-                password: surreal_pass,
-            },
-            namespace: "test",
-            database: req.headers.user,
-        });
-        await generateMaps(db, Number(req.headers.floor));
-        const response = JSON.stringify(
-            await getRecord("maps", Number(req.headers.floor), db)
-        );
-        res.end(response);
+        try {
+            if (!db_url) return res.end("no db url");
+            if (!req.headers.user) return res.end("no user");
+            if (typeof req.headers.user !== "string")
+                return res.end("invalid user");
+            await db.connect(db_url, {
+                auth: {
+                    username: surreal_user,
+                    password: surreal_pass,
+                },
+                namespace: "test",
+                database: req.headers.user,
+            });
+            await generateMaps(db, Number(req.headers.floor));
+            const response = JSON.stringify(
+                await getRecord("maps", Number(req.headers.floor), db)
+            );
+            res.end(response);
+        } catch (error) {
+            res.writeHead(500);
+            res.end(error.message);
+        } finally {
+            await db.close();
+        }
     },
     "/api/v1/generateTown": async (
         req: http.IncomingMessage,
