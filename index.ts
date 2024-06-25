@@ -84,7 +84,7 @@ const routes = {
                 database: req.headers.user,
             });
             if (!req.headers.floor) return res.end("no floor");
-            await generateMaps(db, Number(req.headers.floor));
+            await generateMaps(db, parseInt(req.headers.floor.toString()));
             const response = JSON.stringify(
                 await getRecord("maps", req.headers.floor.toString(), db)
             );

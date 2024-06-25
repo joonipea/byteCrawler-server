@@ -7,6 +7,7 @@ export async function generateMaps(db: Surreal, num: number) {
         const id = new RecordId("maps", num.toString());
         let exists = await db.select(id);
         if (exists) return console.log("Map already exists");
+        console.log(typeof num);
 
         let mapName = randomMapName();
         const size = Math.ceil(Math.floor(Math.random() * 8) + 6 + num / 10);
