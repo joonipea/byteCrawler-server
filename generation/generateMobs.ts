@@ -8,6 +8,7 @@ import { randomEnemyName, randomString } from "../methods/randomString";
 export async function generateMobs(db: Surreal, num: number) {
     try {
         const itemList = await db.select<item>("items");
+        console.log(itemList);
         let mobList: string[] = [];
         for (let i = 0; i < num; i++) {
             let mobName = randomEnemyName();
