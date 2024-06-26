@@ -86,7 +86,11 @@ const routes = {
             if (!req.headers.floor) return res.end("no floor");
             await generateMaps(db, parseInt(req.headers.floor.toString()));
             const response = JSON.stringify(
-                await getRecord("maps", req.headers.floor.toString(), db)
+                await getRecord(
+                    "maps",
+                    parseInt(req.headers.floor.toString()),
+                    db
+                )
             );
             res.end(response);
         } catch (error) {
@@ -114,10 +118,14 @@ const routes = {
             database: req.headers.user,
         });
         if (!req.headers.floor) return res.end("no floor");
-        await generateTown(db, Number(req.headers.floor));
+        await generateTown(db, parseInt(req.headers.floor.toString()));
         res.end(
             JSON.stringify(
-                await getRecord("town", req.headers.floor.toString(), db)
+                await getRecord(
+                    "town",
+                    parseInt(req.headers.floor.toString()),
+                    db
+                )
             )
         );
     },

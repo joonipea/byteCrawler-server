@@ -1,6 +1,6 @@
 import { RecordId, Surreal } from "surrealdb.js";
 
-export async function getRecord(table: string, id: string, db: Surreal) {
+export async function getRecord(table: string, id: any, db: Surreal) {
     let recordName = new RecordId(table, id);
     console.log(recordName);
     let record = await db.select(recordName);
