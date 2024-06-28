@@ -5,6 +5,7 @@ import { Surreal } from "surrealdb.js";
 import dotenv from "dotenv";
 import { generateMaps } from "./generation/generateMaps";
 import { generateTown } from "./generation/generateTown";
+import select from "./temp-surreal-fixes/select";
 dotenv.config();
 
 const PORT = process.env.PORT || 7001;
@@ -57,7 +58,7 @@ const routes = {
                 const [tb, id] = requested_record.split(":");
                 res.end(JSON.stringify(await getRecord(tb, id, db)));
             }
-            res.end(JSON.stringify(await db.select(requested_record)));
+            res.end(select(requested_record, req.headers.user));
         } catch (error) {
             res.writeHead(500);
             res.end(error.message);
