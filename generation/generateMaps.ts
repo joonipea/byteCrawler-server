@@ -4,7 +4,7 @@ import { randomString, randomMapName } from "../methods/randomString";
 export async function generateMaps(db: Surreal, num: number) {
     try {
         // generate a dungeon map
-        const id = new RecordId("maps", num);
+        const id = new RecordId("maps", num.toString());
         console.log(id);
         let exists = await db.select(id);
         if (exists) return console.log("Map already exists");
