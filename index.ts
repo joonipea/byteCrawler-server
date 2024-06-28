@@ -54,6 +54,7 @@ const routes = {
                 database: req.headers.user,
             });
             const requested_record = (req.headers.record as string).toString();
+            console.log(requested_record);
             if (requested_record.includes(":")) {
                 const [tb, id] = requested_record.split(":");
                 res.end(JSON.stringify(await getRecord(tb, id, db)));
