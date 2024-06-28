@@ -19,5 +19,6 @@ export default async function select(table: string, db: string, id?: string) {
         headers: headersList,
     });
     const data = await response.text();
+    console.log(data);
     return data;
 }
