@@ -52,7 +52,7 @@ const routes = {
                 namespace: "test",
                 database: req.headers.user,
             });
-            const requested_record = req.headers.record as string;
+            const requested_record = (req.headers.record as string).toString();
             if (requested_record.includes(":")) {
                 const [tb, id] = requested_record.split(":");
                 res.end(JSON.stringify(await getRecord(tb, id, db)));
