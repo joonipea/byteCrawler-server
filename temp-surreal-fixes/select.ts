@@ -1,7 +1,9 @@
 import Surreal from "surrealdb.js";
 
 export default async function select(table: string, db: string, id?: string) {
-    const url = process.env.SURREAL_DB + `/key/${table}${id ? "/" + id : ""}`;
+    const url =
+        process.env.SURREAL_DB?.replace("/rpc", "") +
+        `/key/${table}${id ? "/" + id : ""}`;
     const user = process.env.SURREAL_USER;
     const pass = process.env.SURREAL_PASS;
     const headersList = {
