@@ -20,6 +20,6 @@ export default async function select(table: string, db: string, id?: string) {
     });
     console.log(response);
     const data = await response.json();
-    console.log(data);
+    console.log(data[0].result[0]);
     return data;
 }
