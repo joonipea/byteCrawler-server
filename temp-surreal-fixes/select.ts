@@ -18,6 +18,7 @@ export default async function select(table: string, db: string, id?: string) {
         method: "GET",
         headers: headersList,
     });
+    console.log(response);
     const data = await response.json();
     console.log(data);
     return data;
