@@ -62,6 +62,7 @@ const routes = {
             console.log(response);
             res.end(JSON.stringify(response));
         } catch (error) {
+            console.error(error);
             res.writeHead(500);
             res.end(error.message);
         } finally {
