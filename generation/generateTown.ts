@@ -4,7 +4,7 @@ import { randomString, randomMapName } from "../methods/randomString";
 export async function generateTown(db: Surreal, num: number) {
     try {
         // generate a town map
-        const id = new RecordId("town", num);
+        const id = new RecordId("town", `town_${num.toString()}`);
         let exists = await db.select(id);
         if (exists) return console.log("Town already exists");
 
